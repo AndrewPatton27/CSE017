@@ -2,10 +2,12 @@
 Version control for CSE017 taken Fall 2026 with Dr. Jialiang Tan. 
 
 Course Description:
+
 This course will cover the design and implementation of algorithms and data structures using Java. It assumes that students have had prior experience using conditional statements, loops, arrays, methods, object-oriented programming, and will build on this knowledge to learn algorithmic techniques such as recursion, algorithm analysis, and sorting, and the design and implementation of data structures such as lists, queues, stacks, trees, and hash tables.
 
-Student Learning Outcomes
-   At the end of this course, students should be able to:
+Student Learning Outcomes:
+
+At the end of this course, students should be able to:
 Implement error-handling logic using Java exception classes and try-catch-finally blocks.
 Write Java programs that read/write data from/to text files
 Use abstract classes and interfaces to represent abstract data types and behaviors
