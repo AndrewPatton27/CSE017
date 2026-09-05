@@ -1,0 +1,79 @@
+Test case 1: Creating an empty bank instance
+There are 0 accounts in the bank
+
+Test case 2: Adding new accounts to the bank
+There are 10 accounts in the bank
+Type            Number          Owner                           Balance         Interest/Type
+Checking        1111111111      William Burst                   $10000.00  
+Savings         1111111112      Lara Stevens                    $75000.00       9.25 
+Checking        1111111113      Nathan Steward                  $24900.90  
+Investment      1111111114      Tracey Bold                     $19000.00       Property  
+Savings         1111111115      Isabel Truman                   $89250.00       10.50
+Savings         1111111116      Andrew Sullivan                 $12734.00       12.10
+Investment      1111111117      Abigail Clark                   $11255.00       Shares    
+Checking        1111111118      George Duck                     $29990.00  
+Savings         1111111119      Emma Stevens                    $31250.00       8.89 
+Investment      1111111120      Lily Daves                      $8800.00        Growth    
+
+Test case 3: finding an account successful
+Account found: Checking         1111111113      Nathan Steward                  $24900.90  
+
+Test case 4: withdraw from account successful
+Withdrawal completed successfully
+New balance: $23900.90
+
+Test case 5: withdraw from account failed
+Withdrawal failed. There is not enough credit in the account
+
+Test case 6: deposit money in an account
+Deposit completed successfully
+New balance: $25900.90
+
+Test case 7: Apply the monthly interest on a savings account
+Account found: Savings          1111111116      Andrew Sullivan                 $12734.00       12.10
+The amount $128.40 was added to the account
+New balance: $12862.40
+
+Test case 8: get the profit on an investment account
+Account found: Investment       1111111120      Lily Daves                      $8800.00        Growth    
+Profit: the amount $440.00 was added to the account1111111120
+New balance: $9240.00
+
+Test case 9: get the loss on an investment account
+Account found: Investment       1111111120      Lily Daves                      $9240.00        Growth    
+Loss: the amount $184.80 was deducted from the account
+New balance: $9055.20
+
+Test case 10: finding an account (fail)
+Account not found.
+
+Test case 11: removing an account (success)
+Account found and removed: Savings      1111111119      Emma Stevens                    $31250.00       8.89 
+Test case 12: removing an account (fail)
+Account not found.
+
+Test case 13: viewing the list of accounts
+There are 9 accounts in the bank
+Type            Number          Owner                           Balance         Interest/Type
+Checking        1111111111      William Burst                   $10000.00  
+Savings         1111111112      Lara Stevens                    $75000.00       9.25 
+Checking        1111111113      Nathan Steward                  $25900.90  
+Investment      1111111114      Tracey Bold                     $19000.00       Property  
+Savings         1111111115      Isabel Truman                   $89250.00       10.50
+Savings         1111111116      Andrew Sullivan                 $12862.40       12.10
+Investment      1111111117      Abigail Clark                   $11255.00       Shares    
+Checking        1111111118      George Duck                     $29990.00  
+Investment      1111111120      Lily Daves                      $9055.20        Growth    
+
+
+Test case 14: sorting the bank accounts by balance
+Type            Number          Owner                           Balance         Interest/Type
+Investment      1111111120      Lily Daves                      $9055.20        Growth    
+Checking        1111111111      William Burst                   $10000.00  
+Investment      1111111117      Abigail Clark                   $11255.00       Shares    
+Savings         1111111116      Andrew Sullivan                 $12862.40       12.10
+Investment      1111111114      Tracey Bold                     $19000.00       Property  
+Checking        1111111113      Nathan Steward                  $25900.90  
+Checking        1111111118      George Duck                     $29990.00  
+Savings         1111111112      Lara Stevens                    $75000.00       9.25 
+Savings         1111111115      Isabel Truman                   $89250.00       10.50
