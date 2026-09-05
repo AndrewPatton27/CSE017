@@ -69,13 +69,11 @@ public class Bank {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%-16s%-16s%-32s%-11s     %s", "Type", "Number", "Owner", "Balance", "Interest/Type"));
-        sb.append("\n");
+        String s = "";
+        s += String.format("%-16s%-16s%-32s%-11s     %s", "Type", "Number", "Owner", "Balance", "Interest/Type") + "\n";
         for (int i = 0; i < count; i++) {
-            sb.append(accounts[i].toString());
-            sb.append("\n");
+            s += (accounts[i].toString()) + "\n";
         }
-        return sb.toString();
+        return s;
     }
 }
