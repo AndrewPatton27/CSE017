@@ -1,24 +1,21 @@
 /**
- * Exception thrown when a transaction requested on a {@link BankAccount}
- * cannot be legally performed - specifically, when {@link BankAccount#withdraw(double)}
- * is called with an amount greater than or equal to the account balance.
- * <p>
- * Extends {@code Exception} (a checked exception) as required by the
- * assignment write-up.
+ * Thrown when a transaction cannot legally be performed on an account, such
+ * as withdrawing a negative amount or an amount that would empty or overdraw
+ * the balance. Checked, since it extends {@code Exception}.
  */
 public class IllegalTransactionException extends Exception {
 
     /**
-     * Creates an IllegalTransactionException with no detail message.
+     * Creates an IllegalTransactionException with a generic detail message.
      */
     public IllegalTransactionException() {
         this("Error: Illegal Transaction");
     }
 
     /**
-     * Creates an IllegalTransactionException with the given detail message.
+     * Creates an IllegalTransactionException describing the refused transaction.
      *
-     * @param message description of why the transaction is illegal
+     * @param message text explaining why the transaction is not allowed
      */
     public IllegalTransactionException(String message) {
         super(message);

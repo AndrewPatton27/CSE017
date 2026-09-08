@@ -1,20 +1,19 @@
 /**
- * Represents an investment account, which gains or loses value depending on
- * a risk factor and one of three investment types: "Growth", "Property", or
- * "Shares".
+ * An investment account, which gains or loses value according to a risk
+ * factor. Its type must be one of Growth, Property, or Shares.
  */
 public class Investment extends BankAccount {
 
-    /** Type of investment: "Property", "Growth", or "Shares". */
+    /** Type of investment: Growth, Property, or Shares. */
     private String type;
 
     /**
      * Creates an investment account with an auto-generated account number.
      *
      * @param owner   name of the account owner
-     * @param balance starting balance of the account
-     * @param type    investment type; must be "Growth", "Property", or "Shares"
-     * @throws BadFormatException if {@code type} is not one of the accepted values
+     * @param balance starting balance
+     * @param type    Growth, Property, or Shares
+     * @throws BadFormatException if the type is none of those three
      */
     public Investment(String owner, double balance, String type) throws BadFormatException {
         super(owner, balance);
@@ -22,15 +21,14 @@ public class Investment extends BankAccount {
     }
 
     /**
-     * Creates an investment account with an explicit account number.
+     * Creates an investment account with an account number read from a file.
      *
-     * @param number  the account number; must be exactly 10 digits
+     * @param number  the account number, which must be exactly 10 digits
      * @param owner   name of the account owner
-     * @param balance starting balance of the account
-     * @param type    investment type; must be "Growth", "Property", or "Shares"
-     * @throws BadFormatException if the super constructor throws it
-     *         (i.e. {@code number} is not exactly 10 digits), or if
-     *         {@code type} is not one of the accepted values
+     * @param balance starting balance
+     * @param type    Growth, Property, or Shares
+     * @throws BadFormatException if the number is not exactly 10 digits, or
+     *         the type is none of those three
      */
     public Investment(long number, String owner, double balance, String type) throws BadFormatException {
         super(number, owner, balance);
@@ -38,17 +36,20 @@ public class Investment extends BankAccount {
     }
 
     /**
-     * @return the investment type
+     * Returns the kind of investment this account holds.
+     *
+     * @return Growth, Property, or Shares
      */
     public String getType() {
         return type;
     }
 
     /**
-     * Sets the investment type.
+     * Changes the kind of investment this account holds, rejecting any value
+     * outside the three permitted types.
      *
-     * @param type the new investment type; must be "Growth", "Property", or "Shares"
-     * @throws BadFormatException if {@code type} is not one of the accepted values
+     * @param type Growth, Property, or Shares
+     * @throws BadFormatException if the type is none of those three
      */
     public void setType(String type) throws BadFormatException {
         if (!type.equals("Growth") && !type.equals("Property") && !type.equals("Shares")) {
@@ -58,11 +59,11 @@ public class Investment extends BankAccount {
     }
 
     /**
-     * Computes a profit (risk &gt;= 0.5) or loss (risk &lt; 0.5) on the
-     * account balance and applies it to the balance.
+     * Applies a gain or loss to the balance: 5% profit when the risk is 0.5
+     * or higher, otherwise a 2% loss.
      *
-     * @param risk risk factor used to determine profit vs. loss
-     * @return the amount of profit (positive) or loss (negative) applied
+     * @param risk risk factor deciding profit or loss
+     * @return the amount applied, positive for a profit and negative for a loss
      */
     public double getProfitOrLoss(double risk) {
         double profitOrLoss;
@@ -76,8 +77,9 @@ public class Investment extends BankAccount {
     }
 
     /**
-     * @return a comma-separated line describing this investment account,
-     *         in the format: {@code Investment,number,owner,balance,type}
+     * Builds this account's CSV line for the accounts file.
+     *
+     * @return a line of the form {@code Investment,number,owner,balance,type}
      */
     @Override
     public String fileString() {
@@ -85,7 +87,10 @@ public class Investment extends BankAccount {
     }
 
     /**
-     * @return a human-readable, formatted description of this investment account
+     * Builds a display row for this account, labeled with its type and
+     * ending with its investment type.
+     *
+     * @return the account formatted as one aligned line of text
      */
     @Override
     public String toString() {

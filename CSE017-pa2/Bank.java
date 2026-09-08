@@ -5,31 +5,31 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Represents a bank holding a collection of {@link BankAccount}s. Supports
- * reading/writing accounts from/to a text file, finding, removing, and
- * sorting accounts, applying interest/profit-or-loss updates, and closing
- * accounts that are eligible for closure.
+ * A bank holding two fixed-size groups of accounts: those still open and
+ * those that have been closed. Accounts can be loaded from and saved to a
+ * text file, searched, sorted, updated by type, and closed once their
+ * balance falls low enough.
  */
 public class Bank {
 
-    /** Max amount of open bank accounts. */
+    /** Maximum number of accounts either array can hold. */
     private static final int CAPACITY = 50;
 
     /** Open (active) bank accounts. */
     private BankAccount[] accounts;
 
-    /** Current number of open bank accounts in {@link #accounts}. */
+    /** How many slots of {@link #accounts} are in use. */
     private int count;
 
     /** Closed bank accounts. */
     private BankAccount[] closed;
 
-    /** Current number of closed bank accounts in {@link #closed}. */
+    /** How many slots of {@link #closed} are in use. */
     private int closedCount;
 
     /**
-     * Creates an empty bank with capacity for {@value #CAPACITY} open
-     * accounts and {@value #CAPACITY} closed accounts.
+     * Creates an empty bank with room for {@value #CAPACITY} open accounts
+     * and {@value #CAPACITY} closed ones.
      */
     public Bank() {
         accounts = new BankAccount[CAPACITY];
@@ -41,10 +41,9 @@ public class Bank {
     }
 
     /**
-     * Creates a bank and populates it by reading account data from the
-     * given file.
+     * Creates a bank and fills it with the accounts stored in a file.
      *
-     * @param filename path to the file containing account data
+     * @param filename path to the file holding the account data
      */
     public Bank(String filename) {
         this();
@@ -52,22 +51,16 @@ public class Bank {
     }
 
     /**
-     * Reads bank account information from {@code filename}, line by line.
-     * Each line is split using the delimiter ",", the tokens are parsed
-     * into account attributes, and a new account (an instance of
-     * {@link Checking}, {@link Savings}, or {@link Investment}, depending
-     * on the first token) is created and added to the bank. If the last
-     * token on a line is the string "closed", the created account is added
-     * to {@link #closed} instead of {@link #accounts}. Handles any
-     * exceptions thrown by the account constructors as well as any format
-     * errors in the file (see output.reference for the expected error
-     * messages).
+     * Loads accounts from a file, one per line, splitting each on commas and
+     * building a {@link Checking}, {@link Savings}, or {@link Investment}
+     * from the first token. A line ending in "closed" is filed under
+     * {@link #closed} rather than {@link #accounts}. Bad lines are reported
+     * and skipped rather than stopping the read.
      *
-     * @param filename path to the file containing account data
+     * @param filename path to the file holding the account data
      */
     private void read(String filename) {
-        try {
-            Scanner input = new Scanner(new File(filename));
+        try (Scanner input = new Scanner(new File(filename))) {
             while (input.hasNextLine()) {
                 String line = input.nextLine();
                 if (line.isBlank()) { continue; }
@@ -79,6 +72,19 @@ public class Bank {
                 if (!type.equals("Checking") && !type.equals("Savings") && !type.equals("Investment")) {
                     printError(line, "Invalid type of account: " + type
                             + ", should be [Checking|Savings|Investment]");
+                    continue;
+                }
+
+                // A line whose last token is "closed" belongs in the closed array
+                boolean isClosed = attributes[attributes.length - 1].equals("closed");
+
+                // Checking stores 4 fields; Savings and Investment store 5. A
+                // closed account carries one extra token at the end.
+                int expected = type.equals("Checking") ? 4 : 5;
+                if (isClosed) { expected++; }
+                if (attributes.length != expected) {
+                    printError(line, "Invalid number of fields: expected " + expected
+                            + ", found " + attributes.length);
                     continue;
                 }
 
@@ -101,9 +107,6 @@ public class Bank {
                             + "\", must be a double");
                     continue;
                 }
-
-                // A line whose last token is "closed" belongs in the closed array
-                boolean isClosed = attributes[attributes.length - 1].equals("closed");
 
                 try {
                     BankAccount ba;
@@ -128,17 +131,16 @@ public class Bank {
                             + "\", must be a double");
                 }
             }
-            input.close();
         } catch (FileNotFoundException e) {
             System.out.println("File " + filename + " not found.");
         }
     }
 
     /**
-     * Prints a formatting error found while reading a line of the accounts file.
+     * Reports a line of the accounts file that could not be read.
      *
-     * @param line    the raw line that could not be turned into an account
-     * @param message description of what was wrong with the line
+     * @param line    the raw line that failed
+     * @param message what was wrong with it
      */
     private void printError(String line, String message) {
         System.out.println("Error at line: " + line);
@@ -147,16 +149,14 @@ public class Bank {
     }
 
     /**
-     * Writes the bank account information of every account in
-     * {@link #accounts} and {@link #closed} to {@code filename}, using the
-     * same CSV format as accounts.txt (via {@link BankAccount#fileString()}).
-     * Closed accounts get an additional "," + "closed" token appended.
+     * Writes every open and closed account to a file in the same CSV format
+     * it was read from, marking each closed account with a trailing
+     * "closed" token. Overwrites whatever the file held.
      *
-     * @param filename path to the file to write account data to
+     * @param filename path to the file to write
      */
     public void save(String filename) {
-        try {
-            PrintWriter output = new PrintWriter(filename);
+        try (PrintWriter output = new PrintWriter(filename)) {
             for (int i = 0; i < count; i++) {
                 output.println(accounts[i].fileString());
             }
@@ -164,28 +164,31 @@ public class Bank {
             for (int i = 0; i < closedCount; i++) {
                 output.println(closed[i].fileString() + ",closed");
             }
-            output.close();
         } catch (FileNotFoundException e) {
             System.out.println("Could not write to file " + filename);
         }
     }
 
     /**
-     * @return the number of open accounts in the bank
+     * Returns how many accounts are still open.
+     *
+     * @return the number of open accounts
      */
     public int size() {
         return count;
     }
 
     /**
-     * @return the number of closed accounts in the bank
+     * Returns how many accounts have been closed.
+     *
+     * @return the number of closed accounts
      */
     public int closedSize() {
         return closedCount;
     }
 
     /**
-     * Adds the given account to the bank's open accounts.
+     * Files an account with the open accounts.
      *
      * @param ba the account to add
      */
@@ -195,20 +198,12 @@ public class Bank {
     }
 
     /**
-     * Finds an open account by account number.
+     * Searches the open accounts for one with a given number.
      *
-     * @param number the account number to search for
-     * @return the matching account, or null if not found
+     * @param number the account number to look for
+     * @return the matching account, or null if there is none
      */
     public BankAccount find(long number) {
-        // // Only works for current implementation of BankAcount number because in order based on number
-        // long firstBANumber = 1111111111L;
-        // int baIndex =  (int)(number-firstBANumber);
-        // try {
-        //     return accounts[baIndex];
-        // }
-        // catch (IndexOutOfBoundsException e) {return null;}
-        // Alternitive solution
         for (int i = 0; i < count; i++) {
             if (accounts[i].getNumber() == number) {
                 return accounts[i];
@@ -218,10 +213,10 @@ public class Bank {
     }
 
     /**
-     * Removes and returns an open account by account number.
+     * Takes an account out of the open accounts, closing the gap it leaves.
      *
      * @param number the account number to remove
-     * @return the removed account, or null if not found
+     * @return the account removed, or null if there was no match
      */
     public BankAccount remove(long number) {
         for (int k = 0; k < count; k++) {
@@ -239,10 +234,9 @@ public class Bank {
     }
 
     /**
-     * Adds the given account to the {@link #closed} array and increments
-     * {@link #closedCount}.
+     * Files an account with the closed accounts.
      *
-     * @param ba the account to mark as closed
+     * @param ba the account being closed
      */
     private void addClosed(BankAccount ba) {
         closed[closedCount] = ba;
@@ -251,8 +245,8 @@ public class Bank {
     }
 
     /**
-     * Sorts the open accounts by balance using {@code java.util.Arrays.sort},
-     * relying on {@link BankAccount#compareTo(BankAccount)}.
+     * Puts the open accounts in order of balance, smallest first, using the
+     * ordering defined by {@link BankAccount#compareTo(BankAccount)}.
      */
     public void sort() {
         // Only the first count slots hold accounts; the rest are null
@@ -260,8 +254,8 @@ public class Bank {
     }
 
     /**
-     * Invokes {@link Savings#applyMonthlyInterest()} on every open account
-     * that is an instance of {@link Savings}.
+     * Credits a month of interest to every open savings account and reports
+     * how many were updated.
      */
     public void updateSavings() {
         int updated = 0;
@@ -275,10 +269,10 @@ public class Bank {
     }
 
     /**
-     * Invokes {@link Investment#getProfitOrLoss(double)} with the given
-     * risk on every open account that is an instance of {@link Investment}.
+     * Applies a gain or loss to every open investment account and reports
+     * how many were updated.
      *
-     * @param risk risk factor to apply to each investment account
+     * @param risk risk factor deciding profit or loss for each account
      */
     public void updateInvestment(double risk) {
         int updated = 0;
@@ -292,8 +286,7 @@ public class Bank {
     }
 
     /**
-     * Prints the open accounts of type {@link Checking} only, followed by
-     * the number of accounts printed.
+     * Prints the open checking accounts and how many there are.
      */
     public void viewChecking() {
         int found = 0;
@@ -307,8 +300,7 @@ public class Bank {
     }
 
     /**
-     * Prints the open accounts of type {@link Savings} only, followed by
-     * the number of accounts printed.
+     * Prints the open savings accounts and how many there are.
      */
     public void viewSavings() {
         int found = 0;
@@ -322,8 +314,7 @@ public class Bank {
     }
 
     /**
-     * Prints the open accounts of type {@link Investment} only, followed by
-     * the number of accounts printed.
+     * Prints the open investment accounts and how many there are.
      */
     public void viewInvestment() {
         int found = 0;
@@ -337,9 +328,8 @@ public class Bank {
     }
 
     /**
-     * Prints the open accounts eligible for closure (i.e.
-     * {@link BankAccount#isCloseable()} returns true), followed by the
-     * number of accounts found.
+     * Prints the open accounts whose balance is low enough to close, and how
+     * many there are.
      */
     public void viewCloseable() {
         int found = 0;
@@ -358,7 +348,8 @@ public class Bank {
     }
 
     /**
-     * Prints the already-closed accounts stored in {@link #closed}.
+     * Prints the accounts that have already been closed, and how many there
+     * are.
      */
     public void viewClosed() {
         for (int i = 0; i < closedCount; i++) {
@@ -368,10 +359,8 @@ public class Bank {
     }
 
     /**
-     * Identifies the closeable accounts among {@link #accounts}, removes
-     * them from {@link #accounts}, and adds them to {@link #closed} (via
-     * {@link #addClosed(BankAccount)}). Prints the number of accounts
-     * moved from {@link #accounts} to {@link #closed}.
+     * Moves every open account with a low enough balance into the closed
+     * accounts, and reports how many were moved.
      */
     public void closeAccounts() {
         int initClosedNum = closedCount;
@@ -403,7 +392,9 @@ public class Bank {
     }
 
     /**
-     * @return a formatted, human-readable listing of the open accounts in the bank
+     * Builds a table of the open accounts under a column header.
+     *
+     * @return the listing as one multi-line string
      */
     public String toString() {
         String s = "";

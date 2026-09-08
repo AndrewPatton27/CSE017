@@ -1,51 +1,50 @@
 /**
- * Abstract base class representing a generic bank account. Concrete bank
- * account types ({@link Checking}, {@link Savings}, {@link Investment})
- * extend this class. Implements {@link Closeable} (an account is closeable
- * when its balance is $100 or less) and {@link Comparable} so that accounts
- * can be sorted (by balance) using {@code java.util.Arrays.sort}.
+ * Base class for every kind of bank account, extended by {@link Checking},
+ * {@link Savings}, and {@link Investment}. Implements {@link Closeable} so an
+ * account can report whether its balance is low enough to close, and
+ * {@link Comparable} so accounts can be sorted by balance.
  */
 public abstract class BankAccount implements Closeable, Comparable<BankAccount> {
 
-    /** Unique account number; must be exactly 10 digits when supplied explicitly. */
+    /** Unique account number, always exactly 10 digits. */
     private long number;
 
     /** Name of the account owner. */
     private String owner;
 
-    /** Current balance of the account. Accessible to subclasses. */
+    /** Current balance, readable and writable by subclasses. */
     protected double balance;
 
-    /** Next account number to auto-assign, starting at 1111111111. */
+    /** Next account number to hand out when one is not supplied. */
     private static long nextNumber = 1111111111L;
 
+    /** An account may be closed once its balance drops to this amount or below. */
+    private static final double CLOSEABLE_BALANCE = 100;
+
     /**
-     * Creates a bank account with an auto-generated account number.
+     * Creates an account, assigning it the next available account number.
      *
      * @param owner   name of the account owner
-     * @param balance starting balance of the account
+     * @param balance starting balance
      */
     public BankAccount(String owner, double balance) {
         this(nextNumber++, owner, balance);
     }
 
     /**
-     * Creates a bank account with an explicit account number, e.g. when
-     * reading accounts back in from a file.
+     * Creates an account with a given number, as when reading one back from
+     * a file, and advances the auto-assigned number past it if needed.
      *
-     * @param number  the account number; must be exactly 10 digits
+     * @param number  the account number, which must be exactly 10 digits
      * @param owner   name of the account owner
-     * @param balance starting balance of the account
-     * @throws BadFormatException if {@code number} is not made up of exactly
-     *         10 digits (validated with a regex via {@code matches()})
+     * @param balance starting balance
+     * @throws BadFormatException if the number is not exactly 10 digits
      */
     public BankAccount(long number, String owner, double balance) throws BadFormatException {
-        // throw BadFormatException if invalid, otherwise assign fields and
         if (! validAcctNumber(number)) {
             throw new BadFormatException("Invalid account number ( " + number + " ), must have 10 digits");
         }
 
-        // update nextNumber if needed
         if (number >= nextNumber) { nextNumber = number + 1; }
         this.number = number;
         this.owner = owner;
@@ -53,10 +52,10 @@ public abstract class BankAccount implements Closeable, Comparable<BankAccount> 
     }
 
     /**
-     * Checks that an account number is made of exactly 10 digits.
+     * Tests an account number against the 10-digit format using a regex.
      *
-     * @param n the account number to validate
-     * @return true if the number has exactly 10 digits, false otherwise
+     * @param n the account number to check
+     * @return true if it is exactly 10 digits, false otherwise
      */
     protected boolean validAcctNumber(long n) {
         String number = Long.toString(n);
@@ -65,13 +64,17 @@ public abstract class BankAccount implements Closeable, Comparable<BankAccount> 
     }
 
     /**
-     * @return the account number
+     * Returns the number identifying this account.
+     *
+     * @return the 10-digit account number
      */
     public long getNumber() {
         return number;
     }
 
     /**
+     * Returns the name on this account.
+     *
      * @return the owner's name
      */
     public String getOwner() {
@@ -79,6 +82,8 @@ public abstract class BankAccount implements Closeable, Comparable<BankAccount> 
     }
 
     /**
+     * Returns how much money the account currently holds.
+     *
      * @return the current balance
      */
     public double getBalance() {
@@ -86,16 +91,7 @@ public abstract class BankAccount implements Closeable, Comparable<BankAccount> 
     }
 
     /**
-     * Sets the account number.
-     *
-     * @param n the new account number
-     */
-    public void setNumber(long n) {
-        number = n;
-    }
-
-    /**
-     * Sets the owner's name.
+     * Changes the name on this account.
      *
      * @param o the new owner name
      */
@@ -104,7 +100,7 @@ public abstract class BankAccount implements Closeable, Comparable<BankAccount> 
     }
 
     /**
-     * Deposits the given amount into the account.
+     * Adds money to the balance.
      *
      * @param amount the amount to deposit
      */
@@ -113,13 +109,17 @@ public abstract class BankAccount implements Closeable, Comparable<BankAccount> 
     }
 
     /**
-     * Withdraws the given amount from the account.
+     * Takes money out of the balance, refusing any withdrawal that would
+     * empty or overdraw the account.
      *
      * @param amount the amount to withdraw
-     * @throws IllegalTransactionException if {@code amount} is greater than
-     *         or equal to the current balance
+     * @throws IllegalTransactionException if {@code amount} is negative, or is
+     *         greater than or equal to the current balance
      */
     public void withdraw(double amount) throws IllegalTransactionException {
+        if (amount < 0) {
+            throw new IllegalTransactionException("Withdrawal failed. The amount must be positive.");
+        }
         if (amount >= balance) {
             throw new IllegalTransactionException("Withdrawal failed. Not enough credit in the account.");
         }
@@ -127,45 +127,41 @@ public abstract class BankAccount implements Closeable, Comparable<BankAccount> 
     }
 
     /**
-     * Determines whether this account is eligible for closure.
+     * Reports whether this account's balance has fallen low enough to close.
      *
-     * @return true if the balance is less than or equal to $100, false otherwise
+     * @return true if the balance is $100 or less, false otherwise
      */
     @Override
     public boolean isCloseable() {
-        return balance <= 100;
+        return balance <= CLOSEABLE_BALANCE;
     }
 
     /**
-     * Compares this account to another by balance, so accounts can be
-     * sorted with {@code java.util.Arrays.sort}.
+     * Orders accounts by balance, smallest first, so an array of them can be
+     * sorted with {@code Arrays.sort}.
      *
-     * @param other the other account to compare to
-     * @return a negative integer, zero, or a positive integer as this
-     *         account's balance is less than, equal to, or greater than
-     *         {@code other}'s balance
+     * @param other the account to compare against
+     * @return negative, zero, or positive as this balance is less than, equal
+     *         to, or greater than the other account's
      */
     @Override
     public int compareTo(BankAccount other) {
-        if (balance < other.getBalance()) {
-            return -1;
-        } else if (balance > other.getBalance()) {
-            return 1;
-        }
-        return 0;
+        return Double.compare(balance, other.getBalance());
     }
 
     /**
-     * Builds the single CSV-formatted line (matching the format of
-     * accounts.txt) used to write this account to a file. Each subclass
-     * formats its own type-specific fields.
+     * Builds this account's CSV line for the accounts file. Each subclass
+     * supplies its own type name and extra fields.
      *
      * @return a comma-separated line describing this account
      */
     public abstract String fileString();
 
     /**
-     * @return a human-readable, formatted description of this account
+     * Builds the number, owner, and balance portion of a display row, which
+     * subclasses prefix with the account type.
+     *
+     * @return the shared part of the account's display line
      */
     public String toString(){
         return String.format("%-10d\t%-30s\t$%-10.2f",number, owner, balance);
