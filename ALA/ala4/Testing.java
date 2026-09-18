@@ -8,8 +8,8 @@ public class Testing {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
-        // testCount(input);
-        // testPerm(input);
+        testCount(input);
+        testPerm(input);
         testRunTimes();
 
         input.close();
@@ -44,14 +44,4 @@ public class Testing {
         System.out.println();
         PerformanceComparator.compareIterations(pairs);
     }
-
-    /*
-     * Discussion (Part 2, item 4):
-     *
-     * TODO: Compare the theoretical Big-O time complexity of gcd_1..gcd_4
-     * (from the comments in GCD.java) against the experimental execution
-     * time and iteration count results from compareExecutionTimes() and
-     * compareIterations(). Discuss whether the experimental results agree
-     * with the theoretical analysis, and explain any discrepancies.
-     */
 }
