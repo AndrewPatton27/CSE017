@@ -8,12 +8,13 @@ This course will cover the design and implementation of algorithms and data stru
 Student Learning Outcomes:
 
 At the end of this course, students should be able to:
-Implement error-handling logic using Java exception classes and try-catch-finally blocks.
-Write Java programs that read/write data from/to text files
-Use abstract classes and interfaces to represent abstract data types and behaviors
-Use recursion to implement algorithms
-Evaluate the time/space complexity of given algorithms using algorithm analysis techniques
-Use Generic Programming to create generic data containers and generic methods
-Use the common data structures available in the Java API: array-based and linked lists, stacks, queues, priority queues, binary search trees, and hash tables to store and manipulate data
-Implement the common data structures in Java: Array List, Linked List, Stack, Queue, PriorityQueue, Binary Search Tree,  and Hash Table
-Implement different generic sorting algorithms (selection sort, insertion sort, bubble sort, mergesort, quicksort, heapsort, bucket sort, and radix sort) and compare them using algorithm analysis techniques
+
+- Implement error-handling logic using Java exception classes and try-catch-finally blocks.
+- Write Java programs that read/write data from/to text files
+- Use abstract classes and interfaces to represent abstract data types and behaviors
+- Use recursion to implement algorithms
+- Evaluate the time/space complexity of given algorithms using algorithm analysis techniques
+- Use Generic Programming to create generic data containers and generic methods
+- Use the common data structures available in the Java API: array-based and linked lists, stacks, queues, priority queues, binary search trees, and hash tables to store and manipulate data
+- Implement the common data structures in Java: Array List, Linked List, Stack, Queue, PriorityQueue, Binary Search Tree,  and Hash Table
+- Implement different generic sorting algorithms (selection sort, insertion sort, bubble sort, mergesort, quicksort, heapsort, bucket sort, and radix sort) and compare them using algorithm analysis techniques
