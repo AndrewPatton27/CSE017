@@ -1,0 +1,12 @@
+Bear:WA-2019:Asian Black:181436.8:210:5
+Bat:PA-2011:Bulldog:60:25:28
+Blue Jay:CA-2002:California scrub jay:87.88:17:17
+Bear:WA-2017:Brown:90718.5:200:5
+Blue Jay:NY-2005:Pinyon jay:90:19:20
+Humming Bird:IL-2015:Violetear:7.25:14:90
+Bat:NM-2020:Microbat:5:100:44
+Humming Bird:WA-2007:Barbthroat:5:18:68
+Bear:AL-2011:Polar:226796:240:4
+Blue Jay:NM-2012:Mexican jay:120:18:22
+Bear:AL-2012:Polar:226796:240:0
+Bat:FL-2010:HorseShoe:10:91:50
