@@ -6,27 +6,30 @@ public class Paths {
 
     // creates the array with initial capacity 10,000 and sets size to 0
     public Paths() {
-        // TODO
+        paths = new Path[10000];
+        size = 0;
     }
 
     public int size() {
-        // TODO
-        return 0;
+        return size;
     }
 
     // adds the path at index size and increments size
     public void addPath(Path p) {
-        // TODO
+        paths[size] = p;
+        size++;
     }
 
     // removes the path at index size-1 by decrementing size
     public void remove() {
-        // TODO
+        size--;
     }
 
     // returns the path at index, throws ArrayIndexOutOfBoundsException if index is not valid
     public Path get(int index) {
-        // TODO
-        return null;
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException("Invalid index: " + index);
+        }
+        return paths[index];
     }
 }

@@ -5,19 +5,22 @@ public class Coordinate {
     public int col;
 
     public Coordinate(int row, int col) {
-        // TODO
+        this.row = row;
+        this.col = col;
     }
 
     // true if both coordinates have the same row and column
     @Override
     public boolean equals(Object obj) {
-        // TODO
+        if (obj instanceof Coordinate) {
+            Coordinate o = (Coordinate) obj;
+            return row == o.row && col == o.col;
+        }
         return false;
     }
 
     @Override
     public String toString() {
-        // TODO
-        return null;
+        return "(" + row + "," + col + ")";
     }
 }
