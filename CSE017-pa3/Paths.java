@@ -20,13 +20,18 @@ public class Paths {
         size++;
     }
 
+    // same as addPath (the UML names this method add)
+    public void add(Path p) {
+        addPath(p);
+    }
+
     // removes the path at index size-1 by decrementing size
     public void remove() {
         size--;
     }
 
     // returns the path at index, throws ArrayIndexOutOfBoundsException if index is not valid
-    public Path get(int index) {
+    public Path get(int index) throws ArrayIndexOutOfBoundsException {
         if (index < 0 || index >= size) {
             throw new ArrayIndexOutOfBoundsException("Invalid index: " + index);
         }

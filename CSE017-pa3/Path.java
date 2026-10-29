@@ -1,5 +1,8 @@
 // a single path through the maze, stored as a manually managed array of coordinates
-public class Path {
+
+import java.util.Arrays;
+
+public class Path implements Cloneable {
 
     private Coordinate[] path;
     private int size;
@@ -33,13 +36,12 @@ public class Path {
         return path[index];
     }
 
-    // returns a deep copy of this path
-    // todo: can add path setter to make o(n)
+    // returns a deep copy of Path
     @Override
     public Path clone() {
         Path p = new Path();
         for (int i = 0; i < size; i++) {
-            p.add(new Coordinate(path[i].row, path[i].col));
+            p.add(new Coordinate(path[i].row(), path[i].col()));
         }
         return p;
     }

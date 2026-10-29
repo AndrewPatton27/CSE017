@@ -1,20 +1,19 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-// a maze of characters: 'S' start, 'E' exit, '.' free way, '#' wall or closed way
-// in the Big-O comments, n = rows * cols (the number of cells in the maze)
-public class Maze {
+// a maze of characters: 'S' start, 'E' exit, '.' free way, '#' wall
+public class Maze implements Cloneable {
 
     private char[][] maze;
     private int rows;
     private int cols;
 
     // counts the recursive calls made by findPath and findAllPaths
-    public static int recursions = 0;
+    public static long recursions = 0;
 
     // creates the two dimensional array maze with the given dimensions
+    // Big-O: O(n)
     public Maze(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -58,12 +57,17 @@ public class Maze {
 
     // true if the coordinate is within the bounds of the maze
     // Big-O: O(1)
-    public boolean isValid(Coordinate c) {
-        return c.row >= 0 && c.row < rows && c.col >= 0 && c.col < cols;
+    private boolean isValid(Coordinate c) {
+        return c.row() >= 0 && c.row() < rows && c.col() >= 0 && c.col() < cols;
     }
 
     // returns the path from start to end, null if no path was found
     // Big-O: O(4^n)
+    /**
+ * @breif
+ * @params
+ * @return
+ */
     public Path findPath(Coordinate start, Coordinate end) {
         recursions = 0;
         Path currentPath = new Path();
@@ -82,36 +86,37 @@ public class Maze {
         if (!isValid(current)) {
             return false;
         }
-        if (getPoint(current.row, current.col) == '#') {
+        if (getPoint(current.row(), current.col()) == '#') {
             return false;
         }
-        if (visited[current.row][current.col]) {
+        if (visited[current.row()][current.col()]) {
             return false;
         }
         if (current.equals(end)) {
             currentPath.add(current);
             return true;
         }
-        visited[current.row][current.col] = true;
+        visited[current.row()][current.col()] = true;
         currentPath.add(current);
         // right
-        if (findPath(new Coordinate(current.row, current.col + 1), end, currentPath, visited)) {
+        if (findPath(new Coordinate(current.row(), current.col() + 1), end, currentPath, visited)) {
             return true;
         }
         // left
-        if (findPath(new Coordinate(current.row, current.col - 1), end, currentPath, visited)) {
+        if (findPath(new Coordinate(current.row(), current.col() - 1), end, currentPath, visited)) {
             return true;
         }
         // up
-        if (findPath(new Coordinate(current.row - 1, current.col), end, currentPath, visited)) {
+        if (findPath(new Coordinate(current.row() - 1, current.col()), end, currentPath, visited)) {
             return true;
         }
         // down
-        if (findPath(new Coordinate(current.row + 1, current.col), end, currentPath, visited)) {
+        if (findPath(new Coordinate(current.row() + 1, current.col()), end, currentPath, visited)) {
             return true;
         }
-        // no direction worked, backtrack
+        // no direction worked, backtrack: remove from the path and unmark as visited
         currentPath.remove();
+        visited[current.row()][current.col()] = false;
         return false;
     }
 
@@ -133,26 +138,26 @@ public class Maze {
         if (!isValid(current)) {
             return;
         }
-        if (getPoint(current.row, current.col) == '#') {
+        if (getPoint(current.row(), current.col()) == '#') {
             return;
         }
-        if (visited[current.row][current.col]) {
+        if (visited[current.row()][current.col()]) {
             return;
         }
         currentPath.add(current);
-        visited[current.row][current.col] = true;
+        visited[current.row()][current.col()] = true;
         if (current.equals(end)) {
             // store a copy, the current path keeps changing as we backtrack
             allPaths.addPath(currentPath.clone());
         } else {
-            findAllPaths(new Coordinate(current.row, current.col + 1), end, allPaths, visited, currentPath);
-            findAllPaths(new Coordinate(current.row, current.col - 1), end, allPaths, visited, currentPath);
-            findAllPaths(new Coordinate(current.row - 1, current.col), end, allPaths, visited, currentPath);
-            findAllPaths(new Coordinate(current.row + 1, current.col), end, allPaths, visited, currentPath);
+            findAllPaths(new Coordinate(current.row(), current.col() + 1), end, allPaths, visited, currentPath);
+            findAllPaths(new Coordinate(current.row(), current.col() - 1), end, allPaths, visited, currentPath);
+            findAllPaths(new Coordinate(current.row() - 1, current.col()), end, allPaths, visited, currentPath);
+            findAllPaths(new Coordinate(current.row() + 1, current.col()), end, allPaths, visited, currentPath);
         }
         // backtrack so other paths can use this coordinate
         currentPath.remove();
-        visited[current.row][current.col] = false;
+        visited[current.row()][current.col()] = false;
     }
 
     // formatted string of the maze organized in rows and columns
@@ -189,11 +194,30 @@ public class Maze {
         for (int i = 0; i < path.size(); i++) {
             Coordinate c = path.get(i);
             // keep the 'S' and 'E' markers visible
-            if (copy.getPoint(c.row, c.col) == '.') {
-                copy.setPoint(c.row, c.col, '*');
+            if (copy.getPoint(c.row(), c.col()) == '.') {
+                copy.setPoint(c.row(), c.col(), '*');
             }
         }
         System.out.println("Maze with solution path");
         System.out.println(copy);
     }
 }
+
+// Test case 5 discussion (performance for different sizes of mazes)
+//
+//   size     one path    all paths    total paths
+//   3 x 3          17          157             12
+//   4 x 4          25        4,349            184
+//   5 x 5          45      326,397          8,512
+//
+// findPath stops as soon as it finds a path. In these open mazes the depth first search heads almost
+// straight to the exit, so the number of recursions grows slowly (17, 25, 45), roughly in proportion
+// to the number of cells. (In the worst case, a maze with many dead ends, findPath can take
+// exponential time because cells are unmarked when it backtracks, which is why its bound is O(4^n).)
+//
+// findAllPaths cannot stop early. It backtracks and unmarks every cell so that it can find every
+// simple path from start to end, and the number of paths grows exponentially with the size of the
+// maze (12, 184, 8,512). The recursions grow with it (157, 4,349, 326,397): going from 3x3 to 4x4
+// multiplies the work by about 28 and going from 4x4 to 5x5 by about 75, which is roughly 1.6 times
+// more work for every extra cell. This is the exponential growth predicted by O(4^n) (n = number of
+// cells), so findAllPaths quickly becomes impractical as the maze gets bigger while findPath stays fast.

@@ -1,0 +1,139 @@
+List A:
+#101  Ana      Laptop       $ 1200.00
+#102  Ben      Mouse        $   25.50
+#103  Cy       Monitor      $  300.00
+#104  Ana      Keyboard     $   80.00
+#105  Dee      Mouse        $   25.50
+#106  Ben      Mouse        $   25.50
+#107  Ana      Laptop       $ 1200.00
+#108  Eli      Webcam       $   60.00
+
+List B:
+#201  Cy       Monitor      $  300.00
+#202  Ana      Keyboard     $   80.00
+#203  Fay      Desk         $  450.00
+#204  Ana      Cable        $    9.99
+#205  Dee      Mouse        $   25.50
+#206  Gus      Laptop       $  999.00
+#207  Ana      Headset      $   75.00
+
+3 orders found for Ana:
+#101  Ana      Laptop       $ 1200.00
+#104  Ana      Keyboard     $   80.00
+#107  Ana      Laptop       $ 1200.00
+No orders found for Zoe
+3 orders found for Ana:
+#202  Ana      Keyboard     $   80.00
+#204  Ana      Cable        $    9.99
+#207  Ana      Headset      $   75.00
+
+Total of list A: $2916.50
+Total of list B: $1939.49
+Orders over $100 in A: 3
+Orders over $100 in B: 3
+
+Union (15):
+#101  Ana      Laptop       $ 1200.00
+#102  Ben      Mouse        $   25.50
+#103  Cy       Monitor      $  300.00
+#104  Ana      Keyboard     $   80.00
+#105  Dee      Mouse        $   25.50
+#106  Ben      Mouse        $   25.50
+#107  Ana      Laptop       $ 1200.00
+#108  Eli      Webcam       $   60.00
+#201  Cy       Monitor      $  300.00
+#202  Ana      Keyboard     $   80.00
+#203  Fay      Desk         $  450.00
+#204  Ana      Cable        $    9.99
+#205  Dee      Mouse        $   25.50
+#206  Gus      Laptop       $  999.00
+#207  Ana      Headset      $   75.00
+
+Union without duplicates (10):
+#101  Ana      Laptop       $ 1200.00
+#102  Ben      Mouse        $   25.50
+#103  Cy       Monitor      $  300.00
+#104  Ana      Keyboard     $   80.00
+#105  Dee      Mouse        $   25.50
+#108  Eli      Webcam       $   60.00
+#203  Fay      Desk         $  450.00
+#204  Ana      Cable        $    9.99
+#206  Gus      Laptop       $  999.00
+#207  Ana      Headset      $   75.00
+
+Intersection (3):
+#103  Cy       Monitor      $  300.00
+#104  Ana      Keyboard     $   80.00
+#105  Dee      Mouse        $   25.50
+
+In A but not in B (5):
+#101  Ana      Laptop       $ 1200.00
+#102  Ben      Mouse        $   25.50
+#106  Ben      Mouse        $   25.50
+#107  Ana      Laptop       $ 1200.00
+#108  Eli      Webcam       $   60.00
+
+Union sorted by price (natural order):
+#204  Ana      Cable        $    9.99
+#102  Ben      Mouse        $   25.50
+#105  Dee      Mouse        $   25.50
+#106  Ben      Mouse        $   25.50
+#205  Dee      Mouse        $   25.50
+#108  Eli      Webcam       $   60.00
+#207  Ana      Headset      $   75.00
+#104  Ana      Keyboard     $   80.00
+#202  Ana      Keyboard     $   80.00
+#103  Cy       Monitor      $  300.00
+#201  Cy       Monitor      $  300.00
+#203  Fay      Desk         $  450.00
+#206  Gus      Laptop       $  999.00
+#101  Ana      Laptop       $ 1200.00
+#107  Ana      Laptop       $ 1200.00
+
+Union sorted by customer:
+#204  Ana      Cable        $    9.99
+#207  Ana      Headset      $   75.00
+#104  Ana      Keyboard     $   80.00
+#202  Ana      Keyboard     $   80.00
+#101  Ana      Laptop       $ 1200.00
+#107  Ana      Laptop       $ 1200.00
+#102  Ben      Mouse        $   25.50
+#106  Ben      Mouse        $   25.50
+#103  Cy       Monitor      $  300.00
+#201  Cy       Monitor      $  300.00
+#105  Dee      Mouse        $   25.50
+#205  Dee      Mouse        $   25.50
+#108  Eli      Webcam       $   60.00
+#203  Fay      Desk         $  450.00
+#206  Gus      Laptop       $  999.00
+
+Union sorted by price, highest first:
+#101  Ana      Laptop       $ 1200.00
+#107  Ana      Laptop       $ 1200.00
+#206  Gus      Laptop       $  999.00
+#203  Fay      Desk         $  450.00
+#103  Cy       Monitor      $  300.00
+#201  Cy       Monitor      $  300.00
+#104  Ana      Keyboard     $   80.00
+#202  Ana      Keyboard     $   80.00
+#207  Ana      Headset      $   75.00
+#108  Eli      Webcam       $   60.00
+#102  Ben      Mouse        $   25.50
+#106  Ben      Mouse        $   25.50
+#105  Dee      Mouse        $   25.50
+#205  Dee      Mouse        $   25.50
+#204  Ana      Cable        $    9.99
+
+Fulfilling the first 3 orders in arrival order (queue):
+  #101  Ana      Laptop       $ 1200.00
+  #102  Ben      Mouse        $   25.50
+  #103  Cy       Monitor      $  300.00
+Orders still waiting: 7
+
+Three biggest orders (priority queue):
+  #101  Ana      Laptop       $ 1200.00
+  #206  Gus      Laptop       $  999.00
+  #203  Fay      Desk         $  450.00
+
+Customers in reverse order of first appearance (stack):
+  [Gus, Fay, Eli, Dee, Cy, Ben, Ana]

@@ -1,12 +1,20 @@
 // a point (row, col) in the maze
 public class Coordinate {
 
-    public int row;
-    public int col;
+    private int row;
+    private int col;
 
     public Coordinate(int row, int col) {
         this.row = row;
         this.col = col;
+    }
+
+    public int row() {
+        return row;
+    }
+
+    public int col() {
+        return col;
     }
 
     // true if both coordinates have the same row and column
