@@ -1,0 +1,8 @@
+101,Ana,Laptop,1200.00
+102,Ben,Mouse,25.50
+103,Cy,Monitor,300.00
+104,Ana,Keyboard,80.00
+105,Dee,Mouse,25.50
+106,Ben,Mouse,25.50
+107,Ana,Laptop,1200.00
+108,Eli,Webcam,60.00

@@ -1,0 +1,7 @@
+201,Cy,Monitor,300.00
+202,Ana,Keyboard,80.00
+203,Fay,Desk,450.00
+204,Ana,Cable,9.99
+205,Dee,Mouse,25.50
+206,Gus,Laptop,999.00
+207,Ana,Headset,75.00

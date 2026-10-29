@@ -1,0 +1,117 @@
+Test case 1: Finding one path in a maze (5 X 5)
+Number of recursions to find one path: 37
+Maze with solution path
+S  *  *  *  *  
+.  #  .  #  *  
+*  *  *  *  *  
+*  #  #  #  .  
+*  *  *  *  E  
+
+
+Test case 2: Finding all paths in a maze (5 x 5)
+Number of recursions to find all paths: 249
+7 path(s) found
+Path 1
+Maze with solution path
+S  *  *  *  *  
+.  #  .  #  *  
+*  *  *  *  *  
+*  #  #  #  .  
+*  *  *  *  E  
+
+Path 2
+Maze with solution path
+S  *  *  *  *  
+.  #  .  #  *  
+.  .  .  .  *  
+.  #  #  #  *  
+.  .  .  .  E  
+
+Path 3
+Maze with solution path
+S  *  *  .  .  
+.  #  *  #  .  
+.  .  *  *  *  
+.  #  #  #  *  
+.  .  .  .  E  
+
+Path 4
+Maze with solution path
+S  *  *  .  .  
+.  #  *  #  .  
+*  *  *  .  .  
+*  #  #  #  .  
+*  *  *  *  E  
+
+Path 5
+Maze with solution path
+S  .  .  .  .  
+*  #  .  #  .  
+*  *  *  *  *  
+.  #  #  #  *  
+.  .  .  .  E  
+
+Path 6
+Maze with solution path
+S  .  *  *  *  
+*  #  *  #  *  
+*  *  *  .  *  
+.  #  #  #  *  
+.  .  .  .  E  
+
+Path 7
+Maze with solution path
+S  .  .  .  .  
+*  #  .  #  .  
+*  .  .  .  .  
+*  #  #  #  .  
+*  *  *  *  E  
+
+
+Test case 3: Finding a path in a maze (4 x 7)
+Number of recursions to find one path: 26
+Maze with solution path
+S  *  *  #  .  #  .  
+.  #  *  *  *  #  #  
+.  .  #  *  *  #  .  
+.  .  #  *  *  *  E  
+
+
+Test case 4: Finding all paths in a maze (4 x 7)
+Number of recursions to find all paths: 149
+4 path(s) found
+Path 1
+Maze with solution path
+S  *  *  #  .  #  .  
+.  #  *  *  *  #  #  
+.  .  #  *  *  #  .  
+.  .  #  *  *  *  E  
+
+Path 2
+Maze with solution path
+S  *  *  #  .  #  .  
+.  #  *  *  *  #  #  
+.  .  #  .  *  #  .  
+.  .  #  .  *  *  E  
+
+Path 3
+Maze with solution path
+S  *  *  #  .  #  .  
+.  #  *  *  .  #  #  
+.  .  #  *  *  #  .  
+.  .  #  .  *  *  E  
+
+Path 4
+Maze with solution path
+S  *  *  #  .  #  .  
+.  #  *  *  .  #  #  
+.  .  #  *  .  #  .  
+.  .  #  *  *  *  E  
+
+
+Test case 5: Performance for different sizes of mazes
+                #recursions     #recursions    
+SIZE            One Path        All Paths       Total Paths    
+Maze 3X3        17              157             12             
+Maze 4X4        25              4349            184            
+Maze 5X5        45              326397          8512
